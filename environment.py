@@ -1,42 +1,26 @@
-{
- "metadata": {
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.8.5-final"
-  },
-  "orig_nbformat": 2,
-  "kernelspec": {
-   "name": "python3",
-   "display_name": "Python 3",
-   "language": "python"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 2,
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "metadata": {},
-   "outputs": [],
-   "source": [
-    "from keras.models import Sequential"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ]
-}
+class Environment:
+    PRICE_IDX = 4  # 종가의 위치
+
+    def __init__(self, chart_data=None):
+        self.chart_data = chart_data
+        self.observation = None
+        self.idx = -1
+
+    def reset(self):
+        self.observation = None
+        self.idx = -1
+
+    def observe(self):
+        if len(self.chart_data) > self.idx + 1:
+            self.idx += 1
+            self.observation = self.chart_data.iloc[self.idx]
+            return self.observation
+        return None
+
+    def get_price(self):
+        if self.observation is not None:
+            return self.observation[self.PRICE_IDX]
+        return None
+
+    def set_chart_data(self, chart_data):
+        self.chart_data = chart_data
